@@ -1,0 +1,35 @@
+﻿@model List<PAUP_Project.Models.RegistracijaKorisnika>
+
+<h2>Popis registriranih korisnika</h2>
+
+@Html.ActionLink("Povratak", "PopisZaAdmina", "Motori", null, new { @class = "btn btn-primary" })
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Korisničko ime</th>
+            <th>Lozinka</th>
+            <th>Prezime i Ime</th>
+            <th>Email</th>
+            <th>OIB</th>
+            <th>Briši korisnika</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var korisnik in Model)
+        {
+            <tr>
+                <td>@korisnik.Id</td>
+                <td>@korisnik.KorisnickoIme</td>
+                <td>@korisnik.Lozinka</td>
+                <td>@korisnik.PrezimeIme</td>
+                <td>@korisnik.Email</td>
+                <td>@korisnik.OIB</td>
+                <td>
+                    @Html.ActionLink("Obriši", "PotvrdaBrisanja", "Korisnici", new { id = korisnik.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

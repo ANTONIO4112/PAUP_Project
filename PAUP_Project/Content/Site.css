@@ -1,0 +1,33 @@
+﻿
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+.field-validation-error{
+    color:red;
+
+}
+.validation-summary-errors{
+    color:red;
+    font-weight:bold;
+}
+.input-validation-error{
+    border: 2px solid red;
+    background-color: #fee;
+}
+.row{
+    margin:5px 0px;
+}

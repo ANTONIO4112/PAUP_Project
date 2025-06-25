@@ -1,0 +1,46 @@
+﻿@model PAUP_Project.Models.Motori
+
+@{
+    ViewBag.Title = "Dodaj novi motor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Brand)
+        @Html.TextBoxFor(model => model.Brand, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Brand, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NazivModela)
+        @Html.TextBoxFor(model => model.NazivModela, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.NazivModela, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Power)
+        @Html.TextBoxFor(model => model.Power, new { @class = "form-control", type = "number" })
+        @Html.ValidationMessageFor(model => model.Power, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Year)
+        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", type = "number" })
+        @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price)
+        @Html.TextBoxFor(model => model.Price, new { @class = "form-control", type = "number", step = "0.01" })
+        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Spremi</button>
+    @Html.ActionLink("Odustani", "Index", null, new { @class = "btn btn-secondary" })
+}

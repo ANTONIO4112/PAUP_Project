@@ -1,0 +1,20 @@
+﻿@using PAUP_Project.Models
+@model Motori
+
+@{
+    ViewBag.Title = "Brisanje";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>@ViewBag.Title</h2>
+    <p>Jeste li sigurni da želite izbrisati motor <strong>@Model.Brand @Model.NazivModela</strong>?</p>
+
+    @using (Html.BeginForm("Brisi", "Motori", FormMethod.Post, new { @class = "form-inline" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        <button type="submit" class="btn btn-danger">Izbriši</button>
+        @Html.ActionLink("Odustani", "PopisZaAdmina", "Motori", null, new { @class = "btn btn-secondary ml-2" })
+    }
+</div>

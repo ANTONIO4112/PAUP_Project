@@ -1,0 +1,24 @@
+﻿@model PAUP_Project.Models.Reklamacija
+
+<h2>Potvrda brisanja reklamacije</h2>
+
+<div>
+    <p>Jeste li sigurni da želite izbrisati reklamaciju?</p>
+    <p><strong>ID reklamacije:</strong> @Model.ReklamacijaID</p>
+    <p><strong>Račun Stavka ID:</strong> @Model.RacunStavkaID</p>
+
+    @* Ako želiš prikazati naziv motora, moraš ga dohvatiti iz povezane entitete, npr.:
+        @Model.RacunStavka?.Motor?.Model ili slično, ako je to pravilno mapirano u modelima *@
+    @* <p><strong>Naziv motora:</strong> @Model.RacunStavka?.Motor?.Model</p> *@
+
+    <p><strong>Datum reklamacije:</strong> @Model.DatumReklamacije.ToString("dd.MM.yyyy. HH:mm")</p>
+    <p><strong>Opis:</strong> @Model.Opis</p>
+    <p><strong>Korisničko ime:</strong> @Model.KorisnickoIme</p>
+
+    @using (Html.BeginForm("BrisiReklamaciju", "Motori", new { id = Model.ReklamacijaID }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Izbriši reklamaciju</button>
+        <a href="@Url.Action("PregledReklamacija", "Motori")" class="btn btn-secondary">Odustani</a>
+    }
+</div>

@@ -1,0 +1,108 @@
+﻿@using System.Web.Mvc.Html
+@model PagedList.IPagedList<PAUP_Project.Models.Motori>
+
+@{
+    ViewBag.Title = "Popis motora za admina";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Popis motora za admina</h2>
+            <div class="text-right">
+                @Html.ActionLink("Popis kupaca", "PopisKupaca", "Korisnici", null, new { @class = "btn btn-primary" })
+                <a href="@Url.Action("PregledReklamacija", "Motori")" class="btn btn-warning">Pregled reklamacija</a>
+                <a href="@Url.Action("DodajNoviMotor", "Motori")" class="btn btn-success">Dodaj novi motor</a>
+                <div class="mb-3">
+                    <a href="@Url.Action("PopisSvihRacuna", "Motori")" class="btn btn-info">Pregled računa</a>
+                </div>
+                @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-inline" }))
+                {
+                    <button type="submit" class="btn btn-danger">Odjavi se</button>
+                }
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("PopisZaAdmina", "Motori", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="form-group mb-2">
+            @Html.TextBox("model", ViewBag.ModelFilter as string, new { @class = "form-control", @placeholder = "Model" })
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            @Html.TextBox("brand", ViewBag.BrandFilter as string, new { @class = "form-control", @placeholder = "Proizvođač" })
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Traži</button>
+    }
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-info">@ViewBag.Message</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>RB</th>
+                        <th>ID</th>
+                        <th>Model</th>
+                        <th>Brand</th>
+                        <th>Power (KS)</th>
+                        <th>Godina</th>
+                        <th>Cijena</th>
+                        <th>Detalji</th>
+                        <th>Uredi</th>
+                        <th>Briši</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1 + ((Model.PageNumber - 1) * Model.PageSize))</td>
+                            <td>@Model[i].Id</td>
+                            <td>@Model[i].NazivModela</td>
+                            <td>@Model[i].Brand</td>
+                            <td>@Model[i].Power</td>
+                            <td>@Model[i].Year</td>
+                            <td>@Model[i].Price.ToString("C")</td>
+                            <td>
+                                <a href="@Url.Action("DetaljiZaAdmina", "Motori", new { id = Model[i].Id })" class="btn btn-info">Detalji</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Azuriraj", "Motori", new { id = Model[i].Id })" class="btn btn-warning">Uredi</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Brisi", "Motori", new { id = Model[i].Id })" class="btn btn-danger" onclick="return confirm('Jeste li sigurni da želite obrisati ovaj motor?');">Briši</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("PopisZaAdmina", new { page = 1, model = ViewBag.ModelFilter, brand = ViewBag.BrandFilter })">Prva</a>
+                        </li>
+                        @for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("PopisZaAdmina", new { page = i, model = ViewBag.ModelFilter, brand = ViewBag.BrandFilter })">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("PopisZaAdmina", new { page = Model.PageCount, model = ViewBag.ModelFilter, brand = ViewBag.BrandFilter })">Zadnja</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+</div>

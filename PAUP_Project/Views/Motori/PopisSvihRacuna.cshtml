@@ -1,0 +1,53 @@
+﻿﻿@model List<PAUP_Project.Models.Racun>
+
+@{
+    ViewBag.Title = "Popis svih računa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Popis svih računa</h2>
+
+    <div>
+        @Html.ActionLink("Povratak", "PopisZaAdmina", null, new { @class = "btn btn-secondary ml-2" })
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <p>Trenutno nema računa za prikaz.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rbr.</th>
+                    <th>Datum kupnje</th>
+                    <th>Korisničko ime</th>
+                    <th>Ukupan iznos</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var racun in Model)
+                {
+                    <tr>
+                        <td>@racun.RacunID</td>
+                        <td>@racun.DatumKupnje.ToString("dd.MM.yyyy. HH:mm")</td>
+                        <td>@racun.Korisnik.KorisnickoIme</td>
+                        <td>@racun.UkupanIznos.ToString("C")</td>
+                        <td>
+                            @Html.ActionLink("Detalji", "DetaljiRacuna", new { id = racun.RacunID }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Izbriši/Storniraj račun", "IzbrisiRacun", new { id = racun.RacunID }, new { @class = "btn btn-danger", onclick = "return confirm('Jeste li sigurni da želite izbrisati ovaj račun?');" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<!-- Obavijest o nemogućnosti brisanja računa zbog reklamacije -->
+<div style="margin-top: 20px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px;">
+    <strong>Napomena:</strong> Račun se ne može obrisati ako postoji reklamacija na taj račun koja još nije riješena/obrisana.
+</div>
+

@@ -1,0 +1,54 @@
+﻿@model PAUP_Project.Models.Racun
+
+@{
+    ViewBag.Title = "Detalji računa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var euroCulture = new System.Globalization.CultureInfo("hr-HR"); // Hrvatski format s eurima
+}
+
+<div class="container">
+    <h2>Detalji računa</h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">Datum kupnje:</dt>
+        <dd class="col-sm-9">@Model.DatumKupnje.ToString("dd.MM.yyyy. HH:mm")</dd>
+
+        <dt class="col-sm-3">Korisničko ime:</dt>
+        <dd class="col-sm-9">@Model.KorisnickoIme</dd>
+
+        <dt class="col-sm-3">Ukupan iznos:</dt>
+        <dd class="col-sm-9">@Model.UkupanIznos.ToString("C", euroCulture)</dd>
+    </dl>
+
+    <h3>Stavke računa</h3>
+    @if (Model.RacunStavke == null || Model.RacunStavke.Count == 0)
+    {
+        <p>Nema stavki za prikaz.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Motor</th>
+                    <th>Količina</th>
+                    <th>Cijena po komadu</th>
+                    <th>Ukupna cijena</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var stavka in Model.RacunStavke)
+                {
+                    <tr>
+                        <td>@stavka.Motor.Brand @stavka.Motor.NazivModela</td>
+                        <td>@stavka.Kolicina</td>
+                        <td>@stavka.Iznos.ToString("C", euroCulture)</td>
+                        <td>@stavka.UkupanIznos.ToString("C", euroCulture)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @Html.ActionLink("Natrag na popis", "PopisSvihRacuna", null, new { @class = "btn btn-secondary" })
+</div>

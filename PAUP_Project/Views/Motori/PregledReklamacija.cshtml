@@ -1,0 +1,63 @@
+﻿@model List<PAUP_Project.Models.Reklamacija>
+
+@{
+    ViewBag.Title = "Pregled prijavljenih reklamacija";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Pregled prijavljenih reklamacija</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">@ViewBag.Message</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Reklamacija ID</th>
+                <th>Račun Stavka ID</th>
+                <th>Motor</th>
+                <th>Datum reklamacije</th>
+                <th>Opis</th>
+                <th>Korisničko ime</th>
+                <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reklamacija in Model)
+            {
+                <tr>
+                    <td>@reklamacija.ReklamacijaID</td>
+                    <td>@reklamacija.RacunStavkaID</td>
+                    <td>
+                        @(reklamacija.RacunStavka?.Motor != null
+                            ? $"{reklamacija.RacunStavka.Motor.Brand} {reklamacija.RacunStavka.Motor.NazivModela}"
+                            : "Nepoznato")
+                    </td>
+                    <td>@reklamacija.DatumReklamacije.ToString("dd.MM.yyyy. HH:mm")</td>
+                    <td>@reklamacija.Opis</td>
+                    <td>@reklamacija.KorisnickoIme</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            @using (Html.BeginForm("PrihvatiReklamaciju", "Motori", new { id = reklamacija.ReklamacijaID }, FormMethod.Post, new { @class = "d-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-success btn-sm">Prihvati</button>
+                            }
+
+                            @using (Html.BeginForm("OdbijReklamaciju", "Motori", new { id = reklamacija.ReklamacijaID }, FormMethod.Post, new { @class = "d-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm">Odbij</button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.ActionLink("Povratak na administraciju", "PopisZaAdmina", "Motori", null, new { @class = "btn btn-secondary mt-3" })
+}

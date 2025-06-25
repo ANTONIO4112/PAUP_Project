@@ -1,0 +1,21 @@
+﻿@model PAUP_Project.Models.Reklamacija
+
+@{
+    ViewBag.Title = "Potvrda brisanja reklamacije";
+}
+
+<h2>Potvrda brisanja reklamacije</h2>
+
+<div>
+    <p>Jeste li sigurni da želite izbrisati reklamaciju?</p>
+    <p>ID reklamacije: @Model.ReklamacijaID</p>
+    <p>Proizvođač: @Model.RacunStavka?.Motor?.Brand</p>
+    <p>Naziv: @Model.RacunStavka?.Motor?.Model</p>
+
+    @using (Html.BeginForm("BrisiReklamaciju", "Motori", new { id = Model.ReklamacijaID }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-danger">Izbriši reklamaciju</button>
+        <a href="@Url.Action("PregledReklamacija", "Motori")" class="btn btn-secondary">Odustani</a>
+    }
+</div>

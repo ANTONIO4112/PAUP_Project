@@ -1,0 +1,60 @@
+﻿@model PAUP_Project.Models.PromjenaLozinkeModel
+
+@{
+    ViewBag.Title = "Promjena Lozinke";
+}
+
+<h2>Promjena Lozinke</h2>
+
+@using (Html.BeginForm("PromijeniLozinku", "Korisnici", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.KorisnickoIme, "Korisničko Ime", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.KorisnickoIme, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.KorisnickoIme)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.StaraLozinka, "Stara Lozinka", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.StaraLozinka, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.StaraLozinka)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.NovaLozinka, "Nova Lozinka", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.NovaLozinka, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NovaLozinka)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PotvrdaLozinke, "Potvrda Lozinke", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.PotvrdaLozinke, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PotvrdaLozinke)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Promijeni lozinku</button>
+        </div>
+    </div>
+    @Html.ActionLink("Povratak", "Prijava", null, new { @class = "btn btn-secondary ml-2" })
+}
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

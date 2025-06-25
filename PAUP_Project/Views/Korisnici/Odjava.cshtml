@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Odjava";
+}
+
+<h2>Odjava</h2>
+
+<p>Da li ste sigurni da želite napustiti svoj račun?</p>
+
+@using (Html.BeginForm("Odjava", "Korisnici", FormMethod.Post))
+{
+    <button type="submit" class="btn btn-danger">Odjavi se</button>
+    @Html.ActionLink("Odustani", "Index", "Home", null, new { @class = "btn btn-secondary" })
+}

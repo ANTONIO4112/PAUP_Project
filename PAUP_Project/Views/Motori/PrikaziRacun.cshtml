@@ -1,0 +1,52 @@
+﻿@model PAUP_Project.Models.Racun
+
+@{
+    ViewBag.Title = "Prikaz računa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var euroCulture = new System.Globalization.CultureInfo("eu"); // Postavljamo CultureInfo za eure
+}
+
+<div class="container">
+    <h2>Detalji računa</h2>
+    <dl class="row">
+        <dt class="col-sm-3">Datum kupnje:</dt>
+        <dd class="col-sm-9">@Model.DatumKupnje.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Korisničko ime:</dt>
+        <dd class="col-sm-9">@ViewBag.KorisnickoIme</dd>
+    </dl>
+
+    <h3>Stavke računa</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Motor</th>
+                <th>Količina</th>
+                <th>Cijena po komadu</th>
+                <th>Ukupna cijena</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stavka in Model.RacunStavke)
+            {
+                <tr>
+                    <td>@($"{stavka.Motor?.Brand} {stavka.Motor?.NazivModela}")</td>
+                    <td>@stavka.Kolicina</td>
+                    <td>@stavka.Iznos.ToString("C", euroCulture)</td>
+                    <td>@stavka.UkupanIznos.ToString("C", euroCulture)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <dl class="row mt-4">
+        <dt class="col-sm-3">Ukupan iznos:</dt>
+        <dd class="col-sm-9">@Model.UkupanIznos.ToString("C", euroCulture)</dd>
+    </dl>
+
+    <div class="alert alert-success mt-4" role="alert">
+        Hvala vam na kupnji! Nadamo se da ćete uživati u vašem novom motoru.
+    </div>
+
+    @Html.ActionLink("Povratak na popis motora", "PopisZaKorisnika", "Motori", null, new { @class = "btn btn-primary" })
+</div>

@@ -1,0 +1,97 @@
+﻿@model List<PAUP_Project.Models.KosaricaStavka>
+
+@{
+    ViewBag.Title = "Košarica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Košarica</h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Prijavljeni korisnik: @ViewBag.KorisnickoIme</h5>
+        </div>
+
+        <div class="col-md-12">
+            @if (Model != null && Model.Count > 0)
+            {
+                <button type="button" class="btn btn-success mb-3" id="buyAllBtn">Kupi sve iz košarice</button>
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Brand</th>
+                            <th>Snaga (KS)</th>
+                            <th>Godina</th>
+                            <th>Cijena</th>
+                            <th>Količina</th>
+                            <th>Ukupno</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var stavka in Model)
+                        {
+                            <tr>
+                                <td>@stavka.Motor.NazivModela</td>
+                                <td>@stavka.Motor.Brand</td>
+                                <td>@stavka.Motor.Power</td>
+                                <td>@stavka.Motor.Year</td>
+                                <td>@stavka.Motor.Price €</td>
+                                <td>@stavka.Kolicina</td>
+                                <td>@(stavka.Kolicina * stavka.Motor.Price) €</td>
+                                <td>
+                                    @using (Html.BeginForm("ObrisiIzKosarice", "Motori", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.Hidden("id", stavka.Id)
+                                        <button type="submit" class="btn btn-danger btn-sm">Ukloni</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Košarica je prazna.</p>
+            }
+
+            @Html.ActionLink("Povratak na popis motora", "PopisZaKorisnika", "Motori", null, new { @class = "btn btn-primary mt-3" })
+
+            <!-- Modal -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel">Potvrda kupnje</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+                        </div>
+                        <div class="modal-body">
+                            Jeste li sigurni da želite kupiti sve proizvode iz košarice?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ne</button>
+                            <a href="@Url.Action("PrikaziRacun", "Motori")" class="btn btn-primary">Da</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Skripte -->
+@section Scripts {
+    <script>
+        $(function () {
+            $('#buyAllBtn').click(function () {
+                var modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                modal.show();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿@model PAUP_Project.Models.Motori
+
+@{
+    ViewBag.Title = "Detalji";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Detalji o Motoru</h2>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Marka</dt>
+                <dd class="col-sm-9">@Model.Brand</dd>
+
+                <dt class="col-sm-3">Model</dt>
+                <dd class="col-sm-9">@Model.NazivModela</dd>
+
+                <dt class="col-sm-3">Snaga (KS)</dt>
+                <dd class="col-sm-9">@Model.Power</dd>
+
+                <dt class="col-sm-3">Godina proizvodnje</dt>
+                <dd class="col-sm-9">@Model.Year</dd>
+
+                <dt class="col-sm-3">Cijena</dt>
+                <dd class="col-sm-9">@Model.Price.ToString("C")</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            @Html.ActionLink("Natrag", "PopisZaAdmina", "Motori", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+</div>

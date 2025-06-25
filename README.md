@@ -1,1 +1,1 @@
-# PAUP_Project
+# Projekt PAUP-Prodaja Mobitela-Petar Čanadi

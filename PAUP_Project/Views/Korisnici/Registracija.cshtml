@@ -1,0 +1,38 @@
+﻿@model PAUP_Project.Models.RegistracijaKorisnika
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.KorisnickoIme, "Korisničko Ime")
+        @Html.TextBoxFor(m => m.KorisnickoIme, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.KorisnickoIme)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Lozinka)
+        @Html.PasswordFor(m => m.Lozinka, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Lozinka)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Email)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PrezimeIme, "Prezime Ime")
+        @Html.TextBoxFor(m => m.PrezimeIme, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PrezimeIme)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.OIB)
+        @Html.TextBoxFor(m => m.OIB, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.OIB)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registracija</button>
+}

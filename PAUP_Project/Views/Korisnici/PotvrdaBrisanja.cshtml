@@ -1,0 +1,9 @@
+﻿@using (Html.BeginForm("BrisiKorisnika", "Korisnici", new { id = Model.Id }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <p>Da li želite izbrisati kupca <strong>@Model.KorisnickoIme</strong>?</p>
+    <button type="submit" class="btn btn-danger">Da</button>
+}
+
+@Html.ActionLink("Odustani", "PopisKupaca", "Korisnici", null, new { @class = "btn btn-default" })

@@ -1,0 +1,127 @@
+﻿@model PagedList.IPagedList<PAUP_Project.Models.Motori>
+
+@{
+    ViewBag.Title = "Popis motora";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Prijavljeni korisnik: @ViewBag.KorisnickoIme</h5>
+        </div>
+        <div class="col-md-12">
+            <h2>Popis motora</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <a href="@Url.Action("Kosarica", "Motori")" class="btn btn-success ml-2">Košarica</a>
+            @Html.ActionLink("Moje Kupnje", "MojeKupnje", "Motori", null, new { @class = "btn btn-info ml-2" })
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-inline" }))
+    {
+        <button type="submit" class="btn btn-danger">Odjavi se</button>
+    }
+
+    @using (Html.BeginForm("PopisZaKorisnika", "Motori", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="form-group mb-2">
+            <label for="model" class="sr-only">Model</label>
+            @Html.TextBox("model", Request.QueryString["model"], new { @class = "form-control", @placeholder = "Model", @id = "model" })
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="brand" class="sr-only">Brand</label>
+            @Html.TextBox("brand", Request.QueryString["brand"], new { @class = "form-control", @placeholder = "Proizvođač", @id = "brand" })
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Traži</button>
+    }
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-info">@ViewBag.Message</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Model</th>
+                    <th>Brand</th>
+                    <th>Snaga (KS)</th>
+                    <th>Godina</th>
+                    <th>Cijena</th>
+                    <th>Detalji</th>
+                    <th>Količina</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var motor in Model)
+                {
+                    <tr>
+                        <td>@motor.Id</td>
+                        <td>@motor.NazivModela</td>
+                        <td>@motor.Brand</td>
+                        <td>@motor.Power</td>
+                        <td>@motor.Year</td>
+                        <td>@motor.Price</td>
+                        <td>@Html.ActionLink("Detalji", "DetaljiZaKorisnika", new { id = motor.Id }, new { @class = "btn btn-info" })</td>
+                        <td>
+                            <form action="@Url.Action("DodajUKosaricu", "Motori")" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="motorId" value="@motor.Id" />
+                                <input type="number" class="form-control" name="kolicina" min="1" value="1" />
+                                <button type="submit" class="btn btn-success">Dodaj u košaricu</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <!-- Pagination -->
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("PopisZaKorisnika", new { page = 1, model = Request.QueryString["model"], brand = Request.QueryString["brand"] })">Prva</a>
+                    </li>
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("PopisZaKorisnika", new { page = i, model = Request.QueryString["model"], brand = Request.QueryString["brand"] })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("PopisZaKorisnika", new { page = Model.PageCount, model = Request.QueryString["model"], brand = Request.QueryString["brand"] })">Zadnja</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('form[action$="DodajUKosaricu"]').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                $.post(form.attr('action'), form.serialize())
+                    .done(function () {
+                        alert('Motor je dodan u košaricu.');
+                    })
+                    .fail(function () {
+                        alert('Došlo je do greške prilikom dodavanja u košaricu.');
+                    });
+            });
+        });
+    </script>
+}

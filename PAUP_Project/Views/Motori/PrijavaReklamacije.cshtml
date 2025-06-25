@@ -1,0 +1,31 @@
+﻿@model PAUP_Project.Models.Reklamacija
+
+@{
+    ViewBag.Title = "Prijava reklamacije";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Prijava reklamacije</h2>
+
+@using (Html.BeginForm("PrijaviReklamaciju", "Motori", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.RacunStavkaID)
+    @Html.HiddenFor(model => model.KorisnickoIme)
+    @Html.HiddenFor(model => model.DatumReklamacije)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Opis, "Opis reklamacije")
+        @Html.TextAreaFor(model => model.Opis, new { @class = "form-control", rows = 5 })
+        @Html.ValidationMessageFor(model => model.Opis, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Prijavi reklamaciju</button>
+    @Html.ActionLink("Odustani", "MojeKupnje", "Motori", null, new { @class = "btn btn-secondary mt-2 ms-2" })
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
+}
